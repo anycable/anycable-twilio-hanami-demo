@@ -47,3 +47,6 @@ lint: bin/golangci-lint
 
 fmt:
 	go fmt ./...
+
+call:
+	@ruby etc/make_call.rb
