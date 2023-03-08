@@ -14,7 +14,7 @@ import (
 
 	"github.com/anycable/twilio-cable/internal/fake_rpc"
 	"github.com/anycable/twilio-cable/pkg/config"
-	"github.com/anycable/twilio-cable/pkg/custom"
+	"github.com/anycable/twilio-cable/pkg/twilio"
 	"github.com/anycable/twilio-cable/pkg/version"
 )
 
@@ -62,21 +62,15 @@ func twilioWebsocketHandler(config *config.Config) func(n *node.Node, c *aconfig
 	return func(n *node.Node, c *aconfig.Config) (http.Handler, error) {
 		extractor := ws.DefaultHeadersExtractor{Headers: c.Headers, Cookies: c.Cookies}
 
-		executor := custom.NewExecutor(n)
+		executor := twilio.NewExecutor(n)
 
 		log.WithField("context", "main").Infof("Handle Twilio Streams WebSocket connections at ws://%s:%d/streams", c.Host, c.Port)
 
 		return ws.WebsocketHandler([]string{}, &extractor, &c.WS, func(wsc *websocket.Conn, info *ws.RequestInfo, callback func()) error {
 			wrappedConn := ws.NewConnection(wsc)
 			session := node.NewSession(n, wrappedConn, info.URL, info.Headers, info.UID)
-			session.SetEncoder(custom.Encoder{})
+			session.SetEncoder(twilio.Encoder{})
 			session.SetExecutor(executor)
-
-			_, err := n.Authenticate(session)
-
-			if err != nil {
-				return err
-			}
 
 			return session.Serve(callback)
 		}), nil
