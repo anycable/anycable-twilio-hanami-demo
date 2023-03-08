@@ -12,10 +12,11 @@ gem "puma"
 gem "rake"
 
 gem "phlex"
-gem "vite_hanami"
+gem "vite_ruby"
 
 group :development, :test do
   gem "dotenv"
+  gem "pry-byebug"
 end
 
 group :cli, :development do
