@@ -5,8 +5,10 @@ require "vite_ruby/phlex_helpers"
 module Kaisen
   module Views
     module Layouts
-      class Base < Phlex::HTML
+      class Base < View
         include ViteRuby::PhlexHelpers
+
+        param :content
 
         def template
           doctype
@@ -21,8 +23,8 @@ module Kaisen
             end
 
             body do
-              main(class: "container mx-auto mt-28 px-5 flex") do
-                yield
+              main(class: "container min-h-screen mx-auto pt-28 pb-28 px-5 flex h-screen") do
+                render content
               end
             end
           end
