@@ -5,7 +5,8 @@ module Kaisen
     module Home
       class Show < Kaisen::Action
         def handle(request, response)
-          response.body = phlex(Views::Home::Show.new(call_sid: request.params[:id]))
+          call_sid = request.params[:id]
+          response.body = phlex(locals: {call_sid:})
         end
       end
     end

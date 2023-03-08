@@ -46,7 +46,7 @@ module Kaisen
         Success(@client.calls.create(**).sid)
       rescue Twilio::REST::RestError => err
         logger.error "Twilio REST error: #{err.message}"
-        Failure(:twilio_rest_error)
+        Failure([:twilio_rest_error, err.message])
       end
 
       def wait_for_call_to_start
@@ -55,7 +55,7 @@ module Kaisen
         loop do
           wait -= 0.5
           if wait < 0
-            return Failure(:call_timed_out)
+            return Failure([:call_timed_out, "Call timed out — no answer"])
           end
 
           sleep 0.5

@@ -16,9 +16,9 @@ module Kaisen
 
           case result
           in Success(call_sid)
-            response.body = phlex(Views::Home::Show.new(phone:, call_sid:))
-          in Failure(error_code)
-            response.redirect_to(routes.path(:root))
+            response.body = phlex(action: :show, locals: {phone:, call_sid:}, notice: "Calls has been started!")
+          in Failure(error_code, error_msg)
+            response.body = phlex(action: :show, locals: {phone:}, alert: error_msg)
           end
         end
       end
