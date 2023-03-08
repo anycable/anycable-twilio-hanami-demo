@@ -8,11 +8,13 @@ gem "hanami-controller", "~> 2.0"
 gem "hanami-validations", "~> 2.0"
 
 gem "dry-types", "~> 1.0", ">= 1.6.1"
+gem "dry-monads"
 gem "puma"
 gem "rake"
 
 gem "phlex"
 gem "vite_ruby"
+gem "twilio-ruby", "~> 5.74.0"
 
 group :development, :test do
   gem "dotenv"

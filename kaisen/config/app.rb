@@ -4,6 +4,9 @@ require "hanami"
 require "phlex"
 require "vite_ruby"
 
+require "dry/monads"
+require "dry/monads/do"
+
 module Kaisen
   class App < Hanami::App
     environment :production do
