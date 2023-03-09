@@ -8,7 +8,7 @@ module Kaisen
 
         cable_ready.append(
           selector: "#events",
-          html: Views::Home::Show::Event.new(text: "Call started: #{call_sid}", event_type: "start").call
+          html: render_event(text: "Call started: #{call_sid}", event_type: "start")
         ).broadcast_to("calls")
       end
 
@@ -17,7 +17,7 @@ module Kaisen
 
         cable_ready.append(
           selector: "#events",
-          html: Views::Home::Show::Event.new(text: "Call stopped: #{call_sid}", event_type: "end").call
+          html: render_event(text: "Call stopped: #{call_sid}", event_type: "end")
         ).broadcast_to("calls")
       end
 
@@ -28,7 +28,7 @@ module Kaisen
 
         cable_ready.append(
           selector: "#events",
-          html: Views::Home::Show::Event.new(text: result.fetch("text"), event_type: result.fetch("event")).call
+          html: render_event(text: result.fetch("text"), event_type: result.fetch("event"))
         ).broadcast_to("calls")
       end
 
@@ -36,6 +36,10 @@ module Kaisen
 
       def call_sid
         params["sid"]
+      end
+
+      def render_event(**)
+        Views::Calls::Show::Event.new(**).call
       end
     end
   end

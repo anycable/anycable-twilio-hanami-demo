@@ -2,7 +2,7 @@
 
 module Kaisen
   module Views
-    module Home
+    module Calls
       class Show
         class Event < View
           option :text

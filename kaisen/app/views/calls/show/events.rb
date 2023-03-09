@@ -2,7 +2,7 @@
 
 module Kaisen
   module Views
-    module Home
+    module Calls
       class Show
         class Events < View
           option :call_sid, optional: true

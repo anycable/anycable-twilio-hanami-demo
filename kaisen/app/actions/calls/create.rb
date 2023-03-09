@@ -2,7 +2,7 @@
 
 module Kaisen
   module Actions
-    module Home
+    module Calls
       class Create < Kaisen::Action
         include Deps["operations.make_call"]
 

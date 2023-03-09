@@ -2,7 +2,7 @@
 
 module Kaisen
   module Actions
-    module Home
+    module Calls
       class Show < Kaisen::Action
         def handle(request, response)
           call_sid = request.params[:id]

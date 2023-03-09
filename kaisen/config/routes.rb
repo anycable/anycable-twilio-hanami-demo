@@ -2,10 +2,10 @@
 
 module Kaisen
   class Routes < Hanami::Routes
-    root to: "home.show"
+    root to: "calls.show"
 
-    get "/calls", to: "home.show", as: :calls
-    get "/calls/:id", to: "home.show", as: :call
-    post "/calls", to: "home.create"
+    get "/calls", to: "calls.show", as: :calls
+    get "/calls/:id", to: "calls.show", as: :call
+    post "/calls", to: "calls.create"
   end
 end
