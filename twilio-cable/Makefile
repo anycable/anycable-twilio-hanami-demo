@@ -50,3 +50,6 @@ fmt:
 
 call:
 	@ruby etc/make_call.rb
+
+vosk-server:
+	@docker run --rm -p 5001:5001 alphacep/kaldi-grpc-en:latest

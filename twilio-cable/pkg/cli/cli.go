@@ -62,7 +62,7 @@ func twilioWebsocketHandler(config *config.Config) func(n *node.Node, c *aconfig
 	return func(n *node.Node, c *aconfig.Config) (http.Handler, error) {
 		extractor := ws.DefaultHeadersExtractor{Headers: c.Headers, Cookies: c.Cookies}
 
-		executor := twilio.NewExecutor(n)
+		executor := twilio.NewExecutor(n, config)
 
 		log.WithField("context", "main").Infof("Handle Twilio Streams WebSocket connections at ws://%s:%d/streams", c.Host, c.Port)
 

@@ -1,6 +1,7 @@
 package twilio
 
 import (
+	"context"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
@@ -11,6 +12,7 @@ import (
 	"github.com/anycable/anycable-go/utils"
 	"github.com/anycable/anycable-go/ws"
 
+	"github.com/anycable/twilio-cable/internal/g711"
 	"github.com/anycable/twilio-cable/pkg/config"
 	"github.com/anycable/twilio-cable/pkg/streamer"
 )
@@ -24,12 +26,13 @@ const channelName = "twilio_streams"
 // Handling Twilio events and transforming them into Action Cable commands
 type Executor struct {
 	node node.AppNode
+	conf *config.Config
 }
 
 var _ node.Executor = (*Executor)(nil)
 
-func NewExecutor(node node.AppNode) *Executor {
-	return &Executor{node: node}
+func NewExecutor(node node.AppNode, c *config.Config) *Executor {
+	return &Executor{node: node, conf: c}
 }
 
 func (ex *Executor) HandleCommand(s *node.Session, msg *common.Message) error {
@@ -119,7 +122,8 @@ func (ex *Executor) HandleCommand(s *node.Session, msg *common.Message) error {
 			return err
 		}
 
-		err = t.Push(&streamer.Packet{Audio: audioBytes, Track: twilioMsg.Track})
+		// Vosk only understands PCM, but Twilio sends x-mulaw; so we need to do some conversion
+		err = t.Push(&streamer.Packet{Audio: g711.DecodeUlaw(audioBytes), Track: twilioMsg.Track})
 
 		return err
 	}
@@ -151,15 +155,9 @@ func (ex *Executor) initStreamer(s *node.Session, sid string) error {
 
 	s.InternalState = make(map[string]interface{})
 
-	conf := config.NewConfig()
-	t := streamer.NewStreamer(conf)
+	st := streamer.NewStreamer(ex.conf)
 
-	t.OnResponse(func(response *streamer.Response) {
-		if response.IsError() {
-			s.Log.Errorf("streamer error: %v", response.Message)
-			return
-		}
-
+	st.OnResponse(func(response *streamer.Response) {
 		_, performError := ex.node.Perform(s, &common.Message{
 			Identifier: identifier,
 			Command:    "message",
@@ -177,7 +175,13 @@ func (ex *Executor) initStreamer(s *node.Session, sid string) error {
 		s.Log.Debugf("Response sent: %v", string(utils.ToJSON(response)))
 	})
 
-	s.InternalState["streamer"] = t
+	err := st.KickOff(context.Background())
+
+	if err != nil {
+		return err
+	}
+
+	s.InternalState["streamer"] = st
 
 	return nil
 }

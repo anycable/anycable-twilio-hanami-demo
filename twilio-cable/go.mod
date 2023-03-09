@@ -3,16 +3,16 @@ module github.com/anycable/twilio-cable
 go 1.19
 
 require (
-	cloud.google.com/go/speech v1.9.0
 	github.com/anycable/anycable-go v1.3.0
 	github.com/apex/log v1.9.0
 	github.com/gorilla/websocket v1.5.0
 	github.com/stretchr/testify v1.8.1
 	github.com/urfave/cli/v2 v2.24.1
+	google.golang.org/grpc v1.53.0
+	google.golang.org/protobuf v1.28.1
 )
 
 require (
-	cloud.google.com/go/longrunning v0.3.0 // indirect
 	github.com/FZambia/sentinel v1.1.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -46,7 +46,5 @@ require (
 	golang.org/x/text v0.7.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	google.golang.org/genproto v0.0.0-20230216225411-c8e22ba71e44 // indirect
-	google.golang.org/grpc v1.53.0 // indirect
-	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

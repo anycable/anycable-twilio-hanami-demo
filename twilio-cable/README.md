@@ -1,21 +1,33 @@
 # Twilio Cable
 
-Twilio Cable is a service which handles incoming Twilio Stream WebSockets connections and performs some processing of audo packets.
+Twilio Cable is a service which handles incoming Twilio Stream WebSockets connections and performs speech-to-text analysis.
 
-It uses an AnyCable RPC protocol to comminicate with a Ruby application (to verify and identifiy streams and process streams information within the app).
+It uses an AnyCable RPC protocol to comminicate with a Ruby application (to verify and identifiy streams and process transcriptions within the app).
 
 It's a wrapper over [AnyCable-Go][anycable-go] WebSocket server, so, most functionality and configuration is inherited from AnyCable. It's built from the [anycable-go-scaffold](https://github.com/anycable/anycable-go-scaffold) template.
 
+We use open-source speech-to-text server, [Vosk][], which can be launched locally via Docker.
+**NOTE:** Vosk can be slow (especially, on M1 MacOS via Docker); we use it only for demonstration purposes. Commercial services (with very similar gRPC APIs 😉) are recommended for production usage.
+
 ## Requirements
 
-- Go 1.19+
+- Go 1.19+.
+- Docker.
 - Twilio account.
 - Ngrok (or similar) to tunnel Twilio WebSockets to localhost.
 - [wsdirector][] to emulate Twilio Streams (without real phone calls)—useful to play with this code without dealing with setting up Twilio/Ngrok.
 
 ## Usage
 
-You can start a server by executing:
+First of all, we need to start Vosk server:
+
+```sh
+make vosk-server
+```
+
+Just keep it running whily you're playing with the app.
+
+Then, let's start AnyCable server:
 
 ```sh
 $ make run
@@ -115,3 +127,4 @@ lefthook install
 [lefthook]: https://github.com/evilmartians/lefthook
 [wsdirector]: https://github.com/palkan/wsdirector
 [Ngrok]: https://ngrok.com
+[Vosk]: https://github.com/alphacep/vosk-server

@@ -7,6 +7,7 @@ import (
 	"github.com/anycable/anycable-go/common"
 	anode "github.com/anycable/anycable-go/node"
 	"github.com/anycable/anycable-go/node_mocks"
+	"github.com/anycable/twilio-cable/pkg/config"
 	"github.com/apex/log"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -15,7 +16,8 @@ import (
 
 func TestHandleCommandConnected(t *testing.T) {
 	node := &node_mocks.AppNode{}
-	executor := NewExecutor(node)
+	conf := config.NewConfig()
+	executor := NewExecutor(node, conf)
 
 	t.Run("when not connected", func(t *testing.T) {
 		session := buildSession(false)
@@ -38,7 +40,8 @@ func TestHandleCommandConnected(t *testing.T) {
 
 func TestHandleCommandStart(t *testing.T) {
 	node := &node_mocks.AppNode{}
-	executor := NewExecutor(node)
+	conf := config.NewConfig()
+	executor := NewExecutor(node, conf)
 
 	t.Run("when not connected", func(t *testing.T) {
 		session := buildSession(false)
@@ -93,7 +96,8 @@ func TestHandleCommandStart(t *testing.T) {
 
 func TestHandleCommandMedia(t *testing.T) {
 	node := &node_mocks.AppNode{}
-	executor := NewExecutor(node)
+	conf := config.NewConfig()
+	executor := NewExecutor(node, conf)
 
 	t.Run("when not connected", func(t *testing.T) {
 		session := buildSession(false)
@@ -107,7 +111,8 @@ func TestHandleCommandMedia(t *testing.T) {
 
 func TestHandleCommandMark(t *testing.T) {
 	node := &node_mocks.AppNode{}
-	executor := NewExecutor(node)
+	conf := config.NewConfig()
+	executor := NewExecutor(node, conf)
 
 	t.Run("when not connected", func(t *testing.T) {
 		session := buildSession(false)
