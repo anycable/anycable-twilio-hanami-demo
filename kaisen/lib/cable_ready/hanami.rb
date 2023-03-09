@@ -6,6 +6,10 @@ require "json"
 module Kaisen
   module CableReady
     module Hanami
+      class StreamChannel < LiteCable::Channel::Base
+        # no-op (just to avoid unknown channel errors on disconnect)
+      end
+
       class StreamName
         def signed(name)
           data = ::Base64.strict_encode64(name.to_json)

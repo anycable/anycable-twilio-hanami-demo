@@ -6,6 +6,7 @@ The app also acts as a playground for the following purposes:
 
 - Using [Phlex][] as a (yet-missing) view layer for Hanami.
 - Using [Vite Ruby][] as assets bundler.
+- Using [Lite Cable][] and [Cable Ready][] for live updates.
 
 ## Usage
 
@@ -27,7 +28,7 @@ Alternatively, you can all the processes independently:
 
 ```sh
 # Hanami server
-bundle exec hanami server
+hanami server
 
 # Assets server (optional)
 bin/vite dev
@@ -37,3 +38,5 @@ bin/vite dev
 [Phlex]: https://www.phlex.fun
 [Vite Ruby]: https://vite-ruby.netlify.app
 [Hivemind]: https://github.com/DarthSim/hivemind
+[Lite Cable]: https://github.com/palkan/litecable
+[Cable Ready]: https://cableready.stimulusreflex.com

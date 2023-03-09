@@ -26,6 +26,9 @@ module Kaisen
 
         result = data["result"]
 
+        # Do not show errors in the browser
+        return if result["event"] == "error"
+
         cable_ready.append(
           selector: "#events",
           html: render_event(text: result.fetch("text"), event_type: result.fetch("event"))
