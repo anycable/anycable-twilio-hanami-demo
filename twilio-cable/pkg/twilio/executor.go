@@ -21,7 +21,7 @@ import (
 const startHeader = "x-twilio-start"
 
 // The name of the Action Cable channel class to handle actions
-const channelName = "twilio_streams"
+const channelName = "twilio"
 
 // Handling Twilio events and transforming them into Action Cable commands
 type Executor struct {

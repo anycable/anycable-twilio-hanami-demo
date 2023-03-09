@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
 require "hanami"
+
 require "phlex"
 require "vite_ruby"
+
+require "litecable"
+require "anycable"
 
 require "dry/monads"
 require "dry/monads/do"
@@ -25,6 +29,11 @@ module Kaisen
       config.actions.content_security_policy[:script_src] += " 'unsafe-eval' 'unsafe-inline'"
       config.actions.content_security_policy[:connect_src] += " ws://#{ ViteRuby.config.host_with_port }"
       config.actions.content_security_policy[:style_src] += " 'unsafe-eval'"
+
+
+      AnyCable.capture_exception do |ex|
+        Hanami.app["logger"].error("#{ex.class}: #{ex.message}\n#{ex.backtrace.take(5).join("\n")}")
+      end
     end
   end
 end

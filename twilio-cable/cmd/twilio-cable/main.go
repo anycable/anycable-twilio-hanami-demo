@@ -17,8 +17,11 @@ import (
 func main() {
 	conf := config.NewConfig()
 
+	// Prepend updated defaults
+	args := append([]string{os.Args[0], "--broadcast_adapter", "nats", "--embed_nats"}, os.Args[1:]...)
+
 	anyconf, err, ok := acli.NewConfigFromCLI(
-		os.Args,
+		args,
 		acli.WithCLIName("twilio-cable"),
 		acli.WithCLIUsageHeader("TwilioCable, the custom AnyCable-Go build to process Twilio Streams"),
 		acli.WithCLIVersion(version.Version()),

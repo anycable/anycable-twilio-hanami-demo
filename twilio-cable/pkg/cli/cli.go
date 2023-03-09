@@ -7,7 +7,6 @@ import (
 	aconfig "github.com/anycable/anycable-go/config"
 	"github.com/anycable/anycable-go/metrics"
 	"github.com/anycable/anycable-go/node"
-	"github.com/anycable/anycable-go/pubsub"
 	"github.com/anycable/anycable-go/ws"
 	"github.com/apex/log"
 	"github.com/gorilla/websocket"
@@ -30,20 +29,10 @@ func Run(conf *config.Config, anyconf *aconfig.Config) error {
 	return anycable.Run()
 }
 
-// NoopSubscriber is used to stub AnyCable pub/sub functionality
-type NoopSubscriber struct{}
-
-var _ pubsub.Subscriber = (*NoopSubscriber)(nil)
-
-func (NoopSubscriber) Start(done chan error) (err error) { return }
-func (NoopSubscriber) Shutdown() (err error)             { return }
-
 func initAnyCableRunner(appConf *config.Config, anyConf *aconfig.Config) (*acli.Runner, error) {
 	opts := []acli.Option{
 		acli.WithName("AnyCable"),
-		acli.WithSubscriber(func(h pubsub.Handler, c *aconfig.Config) (pubsub.Subscriber, error) {
-			return &NoopSubscriber{}, nil
-		}),
+		acli.WithDefaultSubscriber(),
 		acli.WithWebSocketEndpoint("/streams", twilioWebsocketHandler(appConf)),
 	}
 
