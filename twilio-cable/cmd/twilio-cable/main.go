@@ -8,6 +8,7 @@ import (
 	"github.com/anycable/twilio-cable/pkg/cli"
 	"github.com/anycable/twilio-cable/pkg/config"
 	"github.com/anycable/twilio-cable/pkg/version"
+	"github.com/joho/godotenv"
 
 	"github.com/apex/log"
 
@@ -17,11 +18,11 @@ import (
 func main() {
 	conf := config.NewConfig()
 
-	// Prepend updated defaults
-	args := append([]string{os.Args[0], "--broadcast_adapter", "nats", "--embed_nats"}, os.Args[1:]...)
+	// Try loading env file if any
+	_ = godotenv.Load()
 
 	anyconf, err, ok := acli.NewConfigFromCLI(
-		args,
+		os.Args,
 		acli.WithCLIName("twilio-cable"),
 		acli.WithCLIUsageHeader("TwilioCable, the custom AnyCable-Go build to process Twilio Streams"),
 		acli.WithCLIVersion(version.Version()),

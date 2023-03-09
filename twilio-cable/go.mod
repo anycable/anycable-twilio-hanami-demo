@@ -21,6 +21,7 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/gomodule/redigo v1.8.8 // indirect
 	github.com/google/gops v0.3.23 // indirect
+	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/joomcode/errorx v1.1.0 // indirect
 	github.com/klauspost/compress v1.16.0 // indirect
 	github.com/matoous/go-nanoid v1.5.0 // indirect
