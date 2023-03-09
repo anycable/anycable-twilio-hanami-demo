@@ -6,7 +6,8 @@ It uses an AnyCable RPC protocol to comminicate with a Ruby application (to veri
 
 It's a wrapper over [AnyCable-Go][anycable-go] WebSocket server, so, most functionality and configuration is inherited from AnyCable. It's built from the [anycable-go-scaffold](https://github.com/anycable/anycable-go-scaffold) template.
 
-We use open-source speech-to-text server, [Vosk][], which can be launched locally via Docker.
+We use open-source speech-to-text server, [Vosk][], which can be launched locally via Docker. Or, if you're not looking for real results, we have a FFaker-driven Vosk-compatible server for you 😉.
+
 **NOTE:** Vosk can be slow (especially, on M1 MacOS via Docker); we use it only for demonstration purposes. Commercial services (with very similar gRPC APIs 😉) are recommended for production usage.
 
 ## Requirements
@@ -22,7 +23,11 @@ We use open-source speech-to-text server, [Vosk][], which can be launched locall
 First of all, we need to start Vosk server:
 
 ```sh
+# Start a real one via Docker (NOTE: Needs a lot of RAM)
 make vosk-server
+
+# Or start a fake one
+make vosk-fake-server
 ```
 
 Just keep it running whily you're playing with the app.

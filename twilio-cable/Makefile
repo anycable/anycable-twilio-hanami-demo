@@ -53,3 +53,6 @@ call:
 
 vosk-server:
 	@docker run --rm -p 5001:5001 alphacep/kaldi-grpc-en:latest
+
+vosk-fake-server:
+	@ruby etc/fake_vosk.rb

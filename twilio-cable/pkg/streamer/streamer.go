@@ -182,9 +182,9 @@ func (s *Streamer) readFromStream() {
 				} else {
 					s.sendResultFunction(&Response{Message: err.Error(), Event: "error"})
 				}
-
-				break
 			}
+
+			break
 		}
 	}
 
