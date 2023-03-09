@@ -13,3 +13,21 @@ on_worker_boot do
 end
 
 preload_app!
+
+on_worker_boot(:cable) do |idx, data|
+  next if ENV["ANYCABLE_EMBEDDED"] == "false"
+  next if idx > 0
+
+  require "anycable/cli"
+  require "lite_cable/hanami"
+
+  LiteCable.channel_registry = LiteCable::Hanami::Registry.new
+  AnyCable.connection_factory = Kaisen::Connection
+
+  data[:cable] = cable = AnyCable::CLI.new(embedded: true)
+  cable.run
+end
+
+on_worker_shutdown(:cable) do |idx, data|
+  data[:cable]&.shutdown
+end
