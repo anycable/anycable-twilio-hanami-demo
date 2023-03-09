@@ -82,7 +82,7 @@ func (s *Streamer) KickOff(ctx context.Context) error {
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
 
-	conn, err := grpc.Dial("localhost:5001", dialOptions...)
+	conn, err := grpc.Dial(s.config.VoskRPC, dialOptions...)
 
 	if err != nil {
 		return err

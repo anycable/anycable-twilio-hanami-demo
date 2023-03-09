@@ -8,6 +8,13 @@ import (
 func CustomOptions(conf *config.Config) func() ([]cli.Flag, error) {
 	return func() ([]cli.Flag, error) {
 		return []cli.Flag{
+				&cli.StringFlag{
+					Category:    "RECOGNITION",
+					Name:        "vosk_rpc_addr",
+					EnvVars:     []string{"VOSK_RPC_ADDR"},
+					Destination: &conf.VoskRPC,
+					Value:       conf.VoskRPC,
+				},
 				&cli.BoolFlag{
 					Category:    "RECOGNITION",
 					Name:        "partial_recognize",

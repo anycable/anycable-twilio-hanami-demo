@@ -7,11 +7,14 @@ type Config struct {
 	WaitResults int
 	// Enable fake RPC (for testing purposes)
 	FakeRPC bool
+	// Vosk gRPC server address
+	VoskRPC string
 }
 
 func NewConfig() *Config {
 	return &Config{
 		FakeRPC:     false,
 		WaitResults: 2 * 60,
+		VoskRPC:     "localhost:5001",
 	}
 }
