@@ -11,6 +11,9 @@ require "anycable"
 require "dry/monads"
 require "dry/monads/do"
 
+require "anyway/hanami"
+Anyway.loaders.append :hanami, Anyway::Hanami::Loader
+
 module Kaisen
   class App < Hanami::App
     environment :production do

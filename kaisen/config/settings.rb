@@ -7,5 +7,7 @@ module Kaisen
     setting :twilio_auth_token, constructor: Types::String.optional
     setting :twilio_number, constructor: Types::String.optional
     setting :twilio_cable_url, constructor: Types::String.optional
+
+    setting :anycable_broadcast_adapter, default: "nats", constructor: Types::String
   end
 end
