@@ -8,6 +8,8 @@ module Kaisen
     setting :twilio_number, constructor: Types::String.optional
     setting :twilio_cable_url, constructor: Types::String.optional
 
+    setting :cable_url, default: "ws://localhost:8080/cable", constructor: Types::String
     setting :anycable_broadcast_adapter, default: "nats", constructor: Types::String
+    setting :cable_ready_sign_key, default: "s3cЯeT", constructor: Types::String
   end
 end

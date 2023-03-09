@@ -162,9 +162,9 @@ func (ex *Executor) initStreamer(s *node.Session, sid string) error {
 			Identifier: identifier,
 			Command:    "message",
 			Data: string(
-				utils.ToJSON(map[string]string{
+				utils.ToJSON(map[string]interface{}{
 					"action": "handle_message",
-					"result": string(utils.ToJSON(response)),
+					"result": response,
 				})),
 		})
 

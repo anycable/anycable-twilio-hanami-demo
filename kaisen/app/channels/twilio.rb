@@ -4,15 +4,32 @@ module Kaisen
   module Channels
     class Twilio < Channel
       def subscribed
-        puts "[#{call_sid}] Call started"
+        logger.info "[#{call_sid}] Call started"
+
+        cable_ready.append(
+          selector: "#events",
+          html: Views::Home::Show::Event.new(text: "Call started: #{call_sid}", event_type: "start").call
+        ).broadcast_to("calls")
       end
 
       def unsubscribed
-        puts "[#{call_sid}] Call stopped"
+        logger.info "[#{call_sid}] Call stopped"
+
+        cable_ready.append(
+          selector: "#events",
+          html: Views::Home::Show::Event.new(text: "Call stopped: #{call_sid}", event_type: "end").call
+        ).broadcast_to("calls")
       end
 
       def handle_message(data)
-        puts "[#{call_sid}] Message: #{data["result"]}"
+        logger.info "[#{call_sid}] Message: #{data["result"]}"
+
+        result = data["result"]
+
+        cable_ready.append(
+          selector: "#events",
+          html: Views::Home::Show::Event.new(text: result.fetch("text"), event_type: result.fetch("event")).call
+        ).broadcast_to("calls")
       end
 
       private

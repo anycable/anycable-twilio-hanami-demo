@@ -2,10 +2,8 @@
 
 module Kaisen
   class Channel < LiteCable::Channel::Base
-    class << self
-      def inherited(channel)
-        channel.identifier Hanami.app["inflector"].underscore(channel.name)
-      end
-    end
+    private
+    def cable_ready = ::Hanami.app["cable_ready"]
+    def logger = ::Hanami.app["logger"]
   end
 end

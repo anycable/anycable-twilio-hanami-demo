@@ -8,7 +8,7 @@ module Kaisen
           option :call_sid, optional: true
 
           def template
-            div(class: "w-3/4 overflow-y-scroll h-full") do
+            div(id: "events", class: "w-3/4 overflow-y-scroll h-full") do
             end
           end
         end

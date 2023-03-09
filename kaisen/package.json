@@ -1,7 +1,9 @@
 {
   "dependencies": {
+    "@anycable/web": "^0.6.0",
     "@hotwired/stimulus": "^3.2.1",
     "autoprefixer": "^10.4.13",
+    "cable_ready": "^5.0.0-pre10",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.7",
     "vite": "^4.1.4",

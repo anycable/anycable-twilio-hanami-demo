@@ -2,6 +2,14 @@
 
 module Kaisen
   class View < Phlex::HTML
+    register_element :cable_ready_stream_from
+
     extend Dry::Initializer
+
+    private
+
+    def stream_from(name)
+      cable_ready_stream_from(identifier: ::Hanami.app["cable_ready_stream_name"].signed(name))
+    end
   end
 end

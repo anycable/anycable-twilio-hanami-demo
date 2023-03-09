@@ -2,6 +2,20 @@
 # yarn lockfile v1
 
 
+"@anycable/core@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@anycable/core/-/core-0.6.0.tgz#f3d7fc30f467f8470165df04691a2cfd00f377c4"
+  integrity sha512-70dzfCUCg0yJx98siCn9g96deKf6iTGlBADw1B2TLuhRrYtVQ3GD/dGbPhb/cQ2znwNV7DfiLNkVhkBDS4mG6A==
+  dependencies:
+    nanoevents "^7.0.1"
+
+"@anycable/web@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@anycable/web/-/web-0.6.0.tgz#70d903bb28bacd34c6fba2a9cc31f109e09546b4"
+  integrity sha512-0xyUiwWdlJPxKpjJ+j62h5bfK25oAiUqfQJ4iqmccYluHG+wYT1+byVYoYZliSU7jnJ8mr5MJYMjnhAYaiovJA==
+  dependencies:
+    "@anycable/core" "^0.6.0"
+
 "@esbuild/android-arm64@0.16.17":
   version "0.16.17"
   resolved "https://registry.yarnpkg.com/@esbuild/android-arm64/-/android-arm64-0.16.17.tgz#cf91e86df127aa3d141744edafcba0abdc577d23"
@@ -203,6 +217,13 @@ browserslist@^4.21.4:
     electron-to-chromium "^1.4.284"
     node-releases "^2.0.8"
     update-browserslist-db "^1.0.10"
+
+cable_ready@^5.0.0-pre10:
+  version "5.0.0-pre10"
+  resolved "https://registry.yarnpkg.com/cable_ready/-/cable_ready-5.0.0-pre10.tgz#e92ca5b481335dfff95ae148b7b0da86e98001c0"
+  integrity sha512-NevHcu5N5zzUKxyS/cYtkIY6mm7y1anQr9zxu65fqptMOBZS2fukXpz9YEn659yGKyqtCMVNrzkNtkICkBoGAQ==
+  dependencies:
+    morphdom "2.6.1"
 
 camelcase-css@^2.0.1:
   version "2.0.1"
@@ -423,10 +444,20 @@ minimist@^1.2.6:
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.8.tgz#c1a464e7693302e082a075cee0c057741ac4772c"
   integrity sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==
 
+morphdom@2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/morphdom/-/morphdom-2.6.1.tgz#e868e24f989fa3183004b159aed643e628b4306e"
+  integrity sha512-Y8YRbAEP3eKykroIBWrjcfMw7mmwJfjhqdpSvoqinu8Y702nAwikpXcNFDiIkyvfCLxLM9Wu95RZqo4a9jFBaA==
+
 ms@2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
   integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
+
+nanoevents@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/nanoevents/-/nanoevents-7.0.1.tgz#181580b47787688d8cac775b977b1cf24e26e570"
+  integrity sha512-o6lpKiCxLeijK4hgsqfR6CNToPyRU3keKyyI6uwuHRvpRTbZ0wXw51WRgyldVugZqoJfkGFrjrIenYH3bfEO3Q==
 
 nanoid@^3.3.4:
   version "3.3.4"

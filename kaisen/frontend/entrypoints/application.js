@@ -1,2 +1,2 @@
-// Add something here
+import "../init/cable_ready"
 import "../controllers"

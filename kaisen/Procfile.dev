@@ -1,2 +1,3 @@
 web: bundle exec hanami server
 vite: bin/vite dev
+cable: bundle exec anycable

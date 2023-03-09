@@ -18,6 +18,7 @@ module Kaisen
           html do
             head do
               meta(name: "viewport", content: "width=device-width,initial-scale=1")
+              meta(name: "cable-url", content: Hanami.app.settings["cable_url"])
               title { "AnyCable Calls" }
               vite_client
               vite_javascript "application", defer: true, type: "module"
