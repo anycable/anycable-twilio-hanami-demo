@@ -1,6 +1,7 @@
 BIN_NAME=twilio-cable
 OUTPUT ?= dist/twilio-cable
 PROJECT=anycable/twilio-cable
+SCENARIO ?= sample
 
 export GO111MODULE=on
 
@@ -56,3 +57,6 @@ vosk-server:
 
 vosk-fake-server:
 	@ruby etc/fake_vosk.rb
+
+wsdirector:
+	@wsdirector -f etc/fixtures/wsdirector/$(SCENARIO).yml -u ws://localhost:8080/streams
