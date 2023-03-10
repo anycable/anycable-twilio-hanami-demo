@@ -16,11 +16,9 @@ module Kaisen
         @client = Twilio::REST::Client.new(settings.twilio_account_sid, settings.twilio_auth_token)
 
         twiml = Twilio::TwiML::VoiceResponse.new do |r|
-          r.pause(length: 30)
-          # r.say(message: phrase)
-          r.pause(length: 10)
-          # r.say(message: phrase)
-          r.pause(length: 10)
+          r.pause(length: 2)
+          r.say(message: phrase)
+          r.pause(length: 20)
           r.hangup
         end.to_s
 

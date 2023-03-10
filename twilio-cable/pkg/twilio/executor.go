@@ -106,6 +106,11 @@ func (ex *Executor) HandleCommand(s *node.Session, msg *common.Message) error {
 	if msg.Command == MediaEvent {
 		twilioMsg := msg.Data.(MediaPayload)
 
+		// Ignore robot streams
+		if twilioMsg.Track == "outbound" {
+			return nil
+		}
+
 		var t *streamer.Streamer
 
 		if rawStreamer, ok := s.InternalState["streamer"]; ok {
