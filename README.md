@@ -4,7 +4,7 @@ This repository contains example applications demonstrating how to build phone c
 
 The example application peforms speech recognition (via [Vosk][]) and shows results in a web browser.
 
-TODO: Add screenshot/video.
+![](.github/assets/twilio-cable.png)
 
 ## Quick start (w/ Twilio)
 
