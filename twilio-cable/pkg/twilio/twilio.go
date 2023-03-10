@@ -15,6 +15,7 @@ const (
 type StartPayload struct {
 	AccountSID string `json:"accountSid"`
 	StreamSID  string `json:"streamSid"`
+	CallSID    string `json:"callSid"`
 }
 
 func (p *StartPayload) ToJSON() ([]byte, error) {

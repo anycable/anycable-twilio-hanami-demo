@@ -66,6 +66,9 @@ func (ex *Executor) HandleCommand(s *node.Session, msg *common.Message) error {
 			return fmt.Errorf("Malformed start message: %v", msg.Data)
 		}
 
+		s.InternalState = make(map[string]interface{})
+		s.InternalState["callSid"] = start.CallSID
+
 		startJSON, err := start.ToJSON()
 
 		if err != nil {
@@ -88,13 +91,13 @@ func (ex *Executor) HandleCommand(s *node.Session, msg *common.Message) error {
 		s.GetEnv().SetHeader(startHeader, "")
 
 		// We need to perform an additional RPC call to initialize the channel subscription
-		_, err = ex.node.Subscribe(s, &common.Message{Identifier: channelId(msg.Identifier), Command: "subscribe"})
+		_, err = ex.node.Subscribe(s, &common.Message{Identifier: channelId(start.CallSID), Command: "subscribe"})
 
 		if err != nil {
 			return err
 		}
 
-		err = ex.initStreamer(s, msg.Identifier)
+		err = ex.initStreamer(s, start.CallSID)
 
 		if err != nil {
 			return err
@@ -157,8 +160,6 @@ func (ex *Executor) Disconnect(s *node.Session) error {
 
 func (ex *Executor) initStreamer(s *node.Session, sid string) error {
 	identifier := channelId(sid)
-
-	s.InternalState = make(map[string]interface{})
 
 	st := streamer.NewStreamer(ex.conf)
 

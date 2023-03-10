@@ -41,6 +41,7 @@ func TestHandleCommandConnected(t *testing.T) {
 func TestHandleCommandStart(t *testing.T) {
 	node := &node_mocks.AppNode{}
 	conf := config.NewConfig()
+	conf.VoskRPC = ""
 	executor := NewExecutor(node, conf)
 
 	t.Run("when not connected", func(t *testing.T) {
@@ -55,7 +56,7 @@ func TestHandleCommandStart(t *testing.T) {
 	t.Run("calls Authenticate with a header and subscribes", func(t *testing.T) {
 		session := buildSession(true)
 
-		start := StartPayload{AccountSID: "ac42"}
+		start := StartPayload{AccountSID: "ac42", CallSID: "ca123"}
 
 		// We should call authenticate
 		node.On("Authenticate", session).Return(&common.ConnectResult{Status: common.SUCCESS}, nil).Run(func(args mock.Arguments) {
@@ -76,11 +77,11 @@ func TestHandleCommandStart(t *testing.T) {
 
 		// And also subscribe to a channel (in authenticate passes)
 		node.
-			On("Subscribe", session, &common.Message{Identifier: channelId("s123"), Command: "subscribe"}).
+			On("Subscribe", session, &common.Message{Identifier: channelId("ca123"), Command: "subscribe"}).
 			Return(nil, nil)
 
 		err := executor.HandleCommand(session, &common.Message{
-			Identifier: "s123",
+			Identifier: "ca123",
 			Command:    StartEvent,
 			Data:       start,
 		})

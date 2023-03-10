@@ -71,6 +71,10 @@ func (s *Streamer) KickOff(ctx context.Context) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
+	if s.config.VoskRPC == "" {
+		return nil
+	}
+
 	cancelCtx, cancel := context.WithCancel(ctx)
 
 	s.cancelFn = cancel
@@ -117,6 +121,13 @@ func (s *Streamer) KickOff(ctx context.Context) error {
 }
 
 func (s *Streamer) Push(msg *Packet) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	if s.stream == nil {
+		return nil
+	}
+
 	s.buf.Write(msg.Audio)
 
 	if s.buf.Len() > bytesPerFlush {
