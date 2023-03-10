@@ -9,7 +9,7 @@ module Kaisen
           option :event_type, optional: true
 
           def template
-            div(class: "message rounded text-sm lg:text-base border p-2 mt-2 flex flex-col") do
+            div(class: "rounded text-sm lg:text-base border p-2 mt-2 flex flex-col #{event_class}") do
               plain(text)
 
               if event_type
@@ -17,6 +17,16 @@ module Kaisen
                   plain event_type
                 end
               end
+            end
+          end
+
+          private
+
+          def event_class
+            if event_type == "transcript"
+              "self-start border-teal-300 mr-4"
+            else
+              "self-end ml-4"
             end
           end
         end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "hanami/prepare" unless Hanami.app.prepared?
+require "hanami/prepare" unless defined?(Hanami) && Hanami.app.prepared?
 
 require "lite_cable/hanami"
 

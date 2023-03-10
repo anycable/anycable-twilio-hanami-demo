@@ -7,18 +7,27 @@ module Kaisen
         logger.info "[#{call_sid}] Call started"
 
         cable_ready.append(
-          selector: "#events",
-          html: render_event(text: "Call started: #{call_sid}", event_type: "start")
+          selector: "#calls",
+          html: render_call(call_sid:)
         ).broadcast_to("calls")
+
+        cable_ready.append(
+          selector: "#events",
+          html: render_event(text: "Call started", event_type: "start")
+        ).broadcast_to("call_#{call_sid}")
       end
 
       def unsubscribed
         logger.info "[#{call_sid}] Call stopped"
 
+        cable_ready.remove(
+          selector: "#call_#{call_sid}"
+        ).broadcast_to("calls")
+
         cable_ready.append(
           selector: "#events",
-          html: render_event(text: "Call stopped: #{call_sid}", event_type: "end")
-        ).broadcast_to("calls")
+          html: render_event(text: "Call stopped", event_type: "end")
+        ).broadcast_to("call_#{call_sid}")
       end
 
       def handle_message(data)
@@ -32,7 +41,7 @@ module Kaisen
         cable_ready.append(
           selector: "#events",
           html: render_event(text: result.fetch("text"), event_type: result.fetch("event"))
-        ).broadcast_to("calls")
+        ).broadcast_to("call_#{call_sid}")
       end
 
       private
@@ -43,6 +52,10 @@ module Kaisen
 
       def render_event(**)
         Views::Calls::Show::Event.new(**).call
+      end
+
+      def render_call(**)
+        Views::Calls::Show::Call.new(**).call
       end
     end
   end

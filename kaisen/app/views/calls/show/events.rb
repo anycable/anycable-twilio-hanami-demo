@@ -8,7 +8,11 @@ module Kaisen
           option :call_sid, optional: true
 
           def template
-            div(id: "events", class: "w-3/4 overflow-y-scroll h-full") do
+            div(class: "w-2/3 overflow-y-scroll h-full") do
+              h2(class: "font-bold text-xl mb-5 sticky") { "Active call: #{call_sid}" } if call_sid
+              div(id: "events", class: "flex-grow justify-end flex flex-col") do
+                stream_from("call_#{call_sid}")
+              end
             end
           end
         end

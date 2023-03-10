@@ -11,5 +11,7 @@ module Kaisen
     def stream_from(name)
       cable_ready_stream_from(identifier: ::Hanami.app["cable_ready_stream_name"].signed(name))
     end
+
+    def path_for(...) = ::Hanami.app["routes"].path(...)
   end
 end
