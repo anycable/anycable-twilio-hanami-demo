@@ -74,6 +74,12 @@ We have a collection of audio samples in `etc/fixtures/wsdirector/`. You can use
 - ruby.yml
 - sample.yml
 
+**IMPORTANT**: If you updated the `twilio_account_sid` setting in your application, provide it via the `ACCOUNT_SID` env var when running wsdirector scenarios (otherwise streams would be rejected during authentication):
+
+```sh
+ACCOUNT_SID=AC123123123123 wsdirector -f etc/fixtures/wsdirector/sample.yml -u ws://localhost:8080/streams
+```
+
 ## Real phone calls
 
 First, you need to create a Twilio account, buy a phone number and populate the `etc/.env` file with the required configuration parameters (see `etc/.env.sample`).

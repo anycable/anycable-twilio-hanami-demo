@@ -3,7 +3,9 @@
 module Kaisen
   class Settings < Hanami::Settings
     setting :twilio_phrase, default: "Hey, why do you love Ruby?", constructor: Types::String
-    setting :twilio_account_sid, constructor: Types::String.optional
+    # The default value here matches the value from wsdirector fixtures, so you can pass the
+    # authentication check.
+    setting :twilio_account_sid, default: "AC20230312", constructor: Types::String
     setting :twilio_auth_token, constructor: Types::String.optional
     setting :twilio_number, constructor: Types::String.optional
     setting :twilio_cable_url, constructor: Types::String.optional

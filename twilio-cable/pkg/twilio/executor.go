@@ -17,9 +17,6 @@ import (
 	"github.com/anycable/twilio-cable/pkg/streamer"
 )
 
-// Which header to use to pass 'start' message payload
-const startHeader = "x-twilio-start"
-
 // The name of the Action Cable channel class to handle actions
 const channelName = "twilio"
 
@@ -69,14 +66,9 @@ func (ex *Executor) HandleCommand(s *node.Session, msg *common.Message) error {
 		s.InternalState = make(map[string]interface{})
 		s.InternalState["callSid"] = start.CallSID
 
-		startJSON, err := start.ToJSON()
-
-		if err != nil {
-			return err
-		}
-
-		// Pass start data as a header
-		s.GetEnv().SetHeader(startHeader, string(startJSON))
+		// We add account SID as a header to the sesssion.
+		// So, we can access it via request.headers['x-twilio-account'] in Ruby.
+		s.GetEnv().SetHeader("x-twilio-account", start.AccountSID)
 		res, err := ex.node.Authenticate(s)
 
 		if res != nil && res.Status == common.FAILURE {
@@ -86,9 +78,6 @@ func (ex *Executor) HandleCommand(s *node.Session, msg *common.Message) error {
 		if err != nil {
 			return err
 		}
-
-		// Clear header, we no longer need it
-		s.GetEnv().SetHeader(startHeader, "")
 
 		// We need to perform an additional RPC call to initialize the channel subscription
 		_, err = ex.node.Subscribe(s, &common.Message{Identifier: channelId(start.CallSID), Command: "subscribe"})

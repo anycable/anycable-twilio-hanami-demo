@@ -11,7 +11,7 @@
       event: start
       sequenceNumber: '1'
       start:
-        accountSid: AC4154f99f6434058e5085c3b16149b360
+        accountSid: <%= ENV.fetch("ACCOUNT_SID", "AC20230312") %>
         streamSid: MZ50f4396fec06153b78966e74c9f2df8a
         callSid: CAa910aaaee8d1ac3f272a533cd1b22778
         tracks:
