@@ -31,3 +31,4 @@ log/*.log
 tmp/
 dist/
 !/.env
+.env.local

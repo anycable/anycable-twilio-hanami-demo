@@ -54,6 +54,7 @@ func twilioWebsocketHandler(config *config.Config) func(n *node.Node, c *aconfig
 		executor := twilio.NewExecutor(n, config)
 
 		log.WithField("context", "main").Infof("Handle Twilio Streams WebSocket connections at ws://%s:%d/streams", c.Host, c.Port)
+		log.WithField("context", "streamer").Infof("Use Vosk server at %s (partial: %v)", config.VoskRPC, config.PartialRecognize)
 
 		return ws.WebsocketHandler([]string{}, &extractor, &c.WS, func(wsc *websocket.Conn, info *ws.RequestInfo, callback func()) error {
 			wrappedConn := ws.NewConnection(wsc)

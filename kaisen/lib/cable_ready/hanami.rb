@@ -66,6 +66,7 @@ module Kaisen
             set_title
             set_value
             text_content
+            append_or_replace
           ]).freeze
 
         def initialize

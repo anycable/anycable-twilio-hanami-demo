@@ -31,16 +31,15 @@ module Kaisen
       end
 
       def handle_message(data)
-        logger.info "[#{call_sid}] Message: #{data["result"]}"
-
-        result = data["result"]
+        data.fetch("result").values_at("id", "text", "event") => id, text, event_type
 
         # Do not show errors in the browser
-        return if result["event"] == "error"
+        return if event_type == "error"
 
-        cable_ready.append(
+        cable_ready.append_or_replace(
           selector: "#events",
-          html: render_event(text: result.fetch("text"), event_type: result.fetch("event"))
+          target: "#event_#{id}",
+          html: render_event(id:, text:, event_type:)
         ).broadcast_to("call_#{call_sid}")
       end
 

@@ -15,6 +15,8 @@ import (
 
 	"github.com/anycable/twilio-cable/internal/vosk"
 	"github.com/anycable/twilio-cable/pkg/config"
+
+	nanoid "github.com/matoous/go-nanoid"
 )
 
 type Packet struct {
@@ -161,6 +163,8 @@ func (s *Streamer) Close() {
 }
 
 func (s *Streamer) readFromStream() {
+	chunkId, _ := nanoid.Nanoid()
+
 	for {
 		resp, err := s.stream.Recv()
 
@@ -177,7 +181,12 @@ func (s *Streamer) readFromStream() {
 				}
 
 				if alt.Text != "" {
-					s.sendResultFunction(&Response{Message: alt.Text, Final: chunk.Final, Event: "transcript"})
+					s.sendResultFunction(&Response{ID: chunkId, Message: alt.Text, Final: chunk.Final, Event: "transcript"})
+				}
+
+				// reset chunkID
+				if chunk.Final {
+					chunkId, _ = nanoid.Nanoid()
 				}
 			}
 		} else {

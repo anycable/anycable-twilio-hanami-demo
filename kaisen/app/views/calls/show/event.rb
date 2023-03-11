@@ -5,11 +5,12 @@ module Kaisen
     module Calls
       class Show
         class Event < View
+          option :id, optional: true
           option :text
           option :event_type, optional: true
 
           def template
-            div(class: "rounded text-sm lg:text-base border p-2 mt-2 flex flex-col #{event_class}") do
+            div(id: event_id, class: "event rounded text-sm lg:text-base border p-2 mt-2 flex flex-col #{event_class}") do
               plain(text)
 
               if event_type
@@ -21,6 +22,8 @@ module Kaisen
           end
 
           private
+
+          def event_id() = id ? "event_#{id}" : nil
 
           def event_class
             if event_type == "transcript"

@@ -18,8 +18,9 @@ import (
 func main() {
 	conf := config.NewConfig()
 
-	// Try loading env file if any
+	// Try loading env files if any
 	_ = godotenv.Load()
+	_ = godotenv.Load(".env.local")
 
 	anyconf, err, ok := acli.NewConfigFromCLI(
 		os.Args,
