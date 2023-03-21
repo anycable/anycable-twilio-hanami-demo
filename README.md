@@ -2,6 +2,8 @@
 
 This repository contains example applications demonstrating how to build phone calls processing pipelines with [Twilio Media Streams][], [AnyCable-Go][] and Ruby ([Hanami][]).
 
+> Read more in the ["AnyCable off Rails: connecting Twilio streams with Hanami"](https://evilmartians.com/chronicles/anycable-goes-off-rails-connecting-twilio-streams-with-hanami) blog post.
+
 The example application peforms speech recognition (via [Vosk][]) and shows results in a web browser.
 
 ![](.github/assets/twilio-cable.png)
