@@ -1,10 +1,7 @@
 {
   "all": {
     "sourceCodeDir": "frontend",
-    "watchAdditionalPaths": [
-      "tailwind.config.js",
-      "postcss.config.js"
-    ]
+    "watchAdditionalPaths": []
   },
   "development": {
     "autoBuild": true,
