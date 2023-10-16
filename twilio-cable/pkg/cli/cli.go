@@ -7,6 +7,7 @@ import (
 	aconfig "github.com/anycable/anycable-go/config"
 	"github.com/anycable/anycable-go/metrics"
 	"github.com/anycable/anycable-go/node"
+	"github.com/anycable/anycable-go/server"
 	"github.com/anycable/anycable-go/ws"
 	"github.com/apex/log"
 	"github.com/gorilla/websocket"
@@ -33,6 +34,8 @@ func initAnyCableRunner(appConf *config.Config, anyConf *aconfig.Config) (*acli.
 	opts := []acli.Option{
 		acli.WithName("AnyCable"),
 		acli.WithDefaultSubscriber(),
+		acli.WithDefaultBroker(),
+		acli.WithDefaultBroadcaster(),
 		acli.WithWebSocketEndpoint("/streams", twilioWebsocketHandler(appConf)),
 	}
 
@@ -49,18 +52,19 @@ func initAnyCableRunner(appConf *config.Config, anyConf *aconfig.Config) (*acli.
 
 func twilioWebsocketHandler(config *config.Config) func(n *node.Node, c *aconfig.Config) (http.Handler, error) {
 	return func(n *node.Node, c *aconfig.Config) (http.Handler, error) {
-		extractor := ws.DefaultHeadersExtractor{Headers: c.Headers, Cookies: c.Cookies}
+		extractor := server.DefaultHeadersExtractor{Headers: c.Headers, Cookies: c.Cookies}
 
 		executor := twilio.NewExecutor(n, config)
 
 		log.WithField("context", "main").Infof("Handle Twilio Streams WebSocket connections at ws://%s:%d/streams", c.Host, c.Port)
 		log.WithField("context", "streamer").Infof("Use Vosk server at %s (partial: %v)", config.VoskRPC, config.PartialRecognize)
 
-		return ws.WebsocketHandler([]string{}, &extractor, &c.WS, func(wsc *websocket.Conn, info *ws.RequestInfo, callback func()) error {
+		return ws.WebsocketHandler([]string{}, &extractor, &c.WS, func(wsc *websocket.Conn, info *server.RequestInfo, callback func()) error {
 			wrappedConn := ws.NewConnection(wsc)
-			session := node.NewSession(n, wrappedConn, info.URL, info.Headers, info.UID)
-			session.SetEncoder(twilio.Encoder{})
-			session.SetExecutor(executor)
+			session := node.NewSession(
+				n, wrappedConn, info.URL, info.Headers, info.UID,
+				node.WithEncoder(twilio.Encoder{}), node.WithExecutor(executor),
+			)
 
 			return session.Serve(callback)
 		}), nil
