@@ -8,6 +8,7 @@ import (
 	"fmt"
 
 	"github.com/anycable/anycable-go/common"
+	"github.com/anycable/anycable-go/logger"
 	"github.com/anycable/anycable-go/node"
 	"github.com/anycable/anycable-go/utils"
 	"github.com/anycable/anycable-go/ws"
@@ -43,7 +44,7 @@ func (ex *Executor) HandleCommand(s *node.Session, msg *common.Message) error {
 	}
 
 	if msg.Command == StopEvent {
-		s.Log.Debugf("Stop received. Disconnecting")
+		s.Log.Debug("stop received, disconnecting")
 		s.Disconnect("stream stopped", ws.CloseNormalClosure)
 		return nil
 	}
@@ -57,14 +58,13 @@ func (ex *Executor) HandleCommand(s *node.Session, msg *common.Message) error {
 	if msg.Command == StartEvent {
 		start, ok := msg.Data.(StartPayload)
 
-		s.Log.Debugf("Incoming start message: %s", start)
+		s.Log.Debug("incoming start message", "data", start)
 
 		if !ok {
 			return fmt.Errorf("Malformed start message: %v", msg.Data)
 		}
 
-		s.InternalState = make(map[string]interface{})
-		s.InternalState["callSid"] = start.CallSID
+		s.WriteInternalState("callSid", start.CallSID)
 
 		// We add account SID as a header to the sesssion.
 		// So, we can access it via request.headers['x-twilio-account'] in Ruby.
@@ -105,7 +105,7 @@ func (ex *Executor) HandleCommand(s *node.Session, msg *common.Message) error {
 
 		var t *streamer.Streamer
 
-		if rawStreamer, ok := s.InternalState["streamer"]; ok {
+		if rawStreamer, ok := s.ReadInternalState("streamer"); ok {
 			t = rawStreamer.(*streamer.Streamer)
 		}
 
@@ -126,7 +126,7 @@ func (ex *Executor) HandleCommand(s *node.Session, msg *common.Message) error {
 	}
 
 	if msg.Command == MarkEvent {
-		s.Log.Debugf("Mark received: %v", msg.Data)
+		s.Log.Debug("mark received", "data", msg.Data)
 		return nil
 	}
 
@@ -136,7 +136,7 @@ func (ex *Executor) HandleCommand(s *node.Session, msg *common.Message) error {
 func (ex *Executor) Disconnect(s *node.Session) error {
 	var t *streamer.Streamer
 
-	if rawStreamer, ok := s.InternalState["streamer"]; ok {
+	if rawStreamer, ok := s.ReadInternalState("streamer"); ok {
 		t = rawStreamer.(*streamer.Streamer)
 	}
 
@@ -150,7 +150,7 @@ func (ex *Executor) Disconnect(s *node.Session) error {
 func (ex *Executor) initStreamer(s *node.Session, sid string) error {
 	identifier := channelId(sid)
 
-	st := streamer.NewStreamer(ex.conf)
+	st := streamer.NewStreamer(ex.conf, s.Log)
 
 	st.OnResponse(func(response *streamer.Response) {
 		_, performError := ex.node.Perform(s, &common.Message{
@@ -164,10 +164,10 @@ func (ex *Executor) initStreamer(s *node.Session, sid string) error {
 		})
 
 		if performError != nil {
-			s.Log.Errorf("Failed to send response: %v", performError)
+			s.Log.Error("failed to send response", "err", performError)
 		}
 
-		s.Log.Debugf("Response sent: %v", string(utils.ToJSON(response)))
+		s.Log.Debug("response sent", "value", logger.CompactValue(utils.ToJSON(response)))
 	})
 
 	err := st.KickOff(context.Background())
@@ -176,7 +176,7 @@ func (ex *Executor) initStreamer(s *node.Session, sid string) error {
 		return err
 	}
 
-	s.InternalState["streamer"] = st
+	s.WriteInternalState("streamer", st)
 
 	return nil
 }

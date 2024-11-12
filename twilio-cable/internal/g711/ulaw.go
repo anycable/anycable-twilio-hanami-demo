@@ -126,7 +126,7 @@ func EncodeUlawFrame(frame int16) uint8 {
 	frame += uLawBias
 	segment := ulawSegment[(frame>>7)&0xFF]
 	bottom := (frame >> (segment + 3)) & 0x0F
-	return uint8(^(sign | (int16(segment) << 4) | bottom))
+	return uint8(^(sign | (int16(segment) << 4) | bottom)) // nolint:gosec
 }
 
 // DecodeUlaw decodes u-law PCM data to 16bit LPCM

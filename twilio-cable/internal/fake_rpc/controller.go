@@ -2,11 +2,11 @@ package fake_rpc
 
 import (
 	"encoding/json"
+	"log/slog"
 
 	"github.com/anycable/anycable-go/common"
 	"github.com/anycable/anycable-go/node"
 	"github.com/anycable/anycable-go/utils"
-	"github.com/apex/log"
 )
 
 const (
@@ -14,18 +14,18 @@ const (
 )
 
 type Controller struct {
-	log *log.Entry
+	log *slog.Logger
 }
 
 var _ node.Controller = (*Controller)(nil)
 
-func NewController() *Controller {
-	return &Controller{log: log.WithField("context", "fake_rpc")}
+func NewController(l *slog.Logger) *Controller {
+	return &Controller{log: l.With("context", "fake_rpc")}
 }
 
 // Start is no-op
 func (c *Controller) Start() error {
-	c.log.Warnf("Using fake RPC controller")
+	c.log.Warn("using fake RPC controller")
 	return nil
 }
 
@@ -66,7 +66,7 @@ func (c *Controller) Perform(sid string, env *common.SessionEnv, id string, chan
 
 	action := payload["action"].(string)
 
-	c.log.Debugf("Perform action: %s, data: %v", action, payload)
+	c.log.Debug("perform", "action", action, "data", payload)
 
 	nextState := make(map[string]string)
 

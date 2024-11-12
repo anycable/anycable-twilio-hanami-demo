@@ -4,10 +4,10 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"log/slog"
 	"sync"
 	"time"
 
-	"github.com/apex/log"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
@@ -50,7 +50,7 @@ type Streamer struct {
 	closed   bool
 	mu       sync.Mutex
 
-	log *log.Entry
+	log *slog.Logger
 }
 
 const (
@@ -59,13 +59,13 @@ const (
 	bytesPerFlush = 320 * 15
 )
 
-func NewStreamer(c *config.Config) *Streamer {
+func NewStreamer(c *config.Config, l *slog.Logger) *Streamer {
 	return &Streamer{
 		config:      c,
 		waitResults: time.Duration(c.WaitResults) * time.Second,
 		buf:         bytes.NewBuffer(nil),
 		cancelFn:    func() {},
-		log:         log.WithField("context", "streamer"),
+		log:         l.With("context", "streamer"),
 	}
 }
 
@@ -88,7 +88,7 @@ func (s *Streamer) KickOff(ctx context.Context) error {
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
 
-	conn, err := grpc.Dial(s.config.VoskRPC, dialOptions...)
+	conn, err := grpc.NewClient(s.config.VoskRPC, dialOptions...)
 
 	if err != nil {
 		return err
@@ -176,7 +176,7 @@ func (s *Streamer) readFromStream() {
 				alt := chunk.Alternatives[0]
 
 				if alt.Text == "" && chunk.Final {
-					s.log.Debugf("recognition completed")
+					s.log.Debug("recognition completed")
 					break
 				}
 
@@ -192,7 +192,7 @@ func (s *Streamer) readFromStream() {
 		} else {
 			st, ok := status.FromError(err)
 			if !ok {
-				s.log.Errorf("recognize error: %v", err)
+				s.log.Error("recognize failed", "err", err)
 				s.sendResultFunction(&Response{Message: err.Error(), Event: "error"})
 			} else {
 				code := st.Code()
